@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght=300;400;500;700&display=swap');
         body { font-family: 'Noto Sans TC', sans-serif; }
     </style>
 </head>
@@ -26,13 +26,11 @@
 
     <main class="max-w-6xl w-full mx-auto p-4 md:p-6 space-y-6">
 
-        <!-- 新增區塊：最新公告管理 -->
         <div class="bg-white rounded-2xl p-6 shadow-xs border border-slate-200 space-y-4">
             <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">📢 最新公告發布管理</h2>
             <p class="text-slate-500 text-sm">此處輸入的內容會直接顯示在前台首頁。支援換行、文字，並可使用下方按鈕快捷插入網頁超連結或網路圖片。</p>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- 編輯區 -->
                 <div class="space-y-2">
                     <label class="block text-xs font-bold text-slate-600">✍️ 編輯公告內容</label>
                     <textarea id="f-announcement" class="w-full h-44 border border-slate-200 rounded-xl p-3 text-sm focus:outline-emerald-500" placeholder="歡迎來到環境知識練習系統！請多利用三大模式進行檢定複習。"></textarea>
@@ -41,7 +39,6 @@
                         <button onclick="insertHTML('img')" type="button" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-2.5 py-1.5 rounded-lg transition font-medium cursor-pointer">🖼️ 插入圖片網址</button>
                     </div>
                 </div>
-                <!-- 預覽區 -->
                 <div class="space-y-2">
                     <label class="block text-xs font-bold text-slate-600">👀 前台畫面即時預覽</label>
                     <div class="bg-amber-50 border-l-4 border-amber-500 rounded-r-xl p-4 h-44 overflow-y-auto">
@@ -54,11 +51,10 @@
             </div>
             <div class="flex justify-end gap-2 border-t border-slate-100 pt-3">
                 <button onclick="clearAnnouncement()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium px-4 py-2 rounded-xl text-xs transition cursor-pointer">清空公告</button>
-                <button onclick="saveAnnouncement()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-5 py-2 rounded-xl text-xs transition shadow-xs cursor-pointer">儲存並發布公告</button>
+                <button onclick="saveAnnouncement()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-5 py-2 rounded-xl text-xs transition shadow-xs cursor-pointer">儲存公告</button>
             </div>
         </div>
         
-        <!-- 區塊一：批次匯入與同步控制 -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="bg-white rounded-2xl p-6 shadow-xs border border-slate-200 md:col-span-2 space-y-4">
                 <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">📥 批次續接匯入題庫 (CSV)</h2>
@@ -74,23 +70,27 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-2xl p-6 shadow-xs border border-slate-200 flex flex-col justify-between">
+            <div class="bg-white rounded-2xl p-6 shadow-xs border border-slate-200 flex flex-col justify-between gap-4">
                 <div>
-                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">💾 數據同步控制</h2>
-                    <p class="text-slate-500 text-sm mt-2">將此處設定好的題庫同步到本機空間，前台測驗網頁即可直接抓取作答。</p>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">💾 數據發布與同步</h2>
+                    <p class="text-slate-500 text-sm mt-1">設定好題目與公告後，請點擊「匯出全系統資料檔」並將下載的檔案丟進 GitHub 中，才能對大眾發布。</p>
                 </div>
-                <div class="grid grid-cols-2 gap-2 mt-4">
-                    <button onclick="saveToStorage()" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-xl transition text-sm cursor-pointer">
-                        儲存並同步題庫
+                <div class="flex flex-col gap-2">
+                    <button onclick="exportSystemData()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl transition text-sm shadow-sm cursor-pointer">
+                        🚀 匯出全系統資料檔 (JSON)
                     </button>
-                    <button onclick="clearAllData()" class="bg-rose-100 hover:bg-rose-200 text-rose-700 font-medium py-2 rounded-xl transition text-sm cursor-pointer">
-                        清空全部題目
-                    </button>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="saveToStorage()" class="bg-slate-700 hover:bg-slate-800 text-white font-medium py-2 rounded-xl transition text-xs cursor-pointer">
+                            本機暫存
+                        </button>
+                        <button onclick="clearAllData()" class="bg-rose-100 hover:bg-rose-200 text-rose-700 font-medium py-2 rounded-xl transition text-xs cursor-pointer">
+                            清空全部
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- 區塊二：手動新增單筆題目 -->
         <div class="bg-white rounded-2xl p-6 shadow-xs border border-slate-200 space-y-4">
             <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">✍️ 手動新增單筆題目</h2>
             <form id="single-form" onsubmit="addSingleQuestion(event)" class="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -145,7 +145,6 @@
             </form>
         </div>
 
-        <!-- 區塊三：題庫清單預覽 -->
         <div class="bg-white rounded-2xl p-6 shadow-xs border border-slate-200 space-y-4">
             <h2 class="text-lg font-bold text-slate-900">🔍 當前臨時題庫列表 (計有內部排序)</h2>
             <div class="overflow-x-auto border border-slate-100 rounded-xl">
@@ -160,8 +159,7 @@
                         </tr>
                     </thead>
                     <tbody id="table-body" class="divide-y divide-slate-100 text-slate-600">
-                        <!-- 動態插入 -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </div>
@@ -172,66 +170,53 @@
         let dbList = [];
 
         window.onload = function() {
-            // 載入原有的 localstorage 資料
             const localData = localStorage.getItem('environmental_quiz_db');
             if (localData) { dbList = JSON.parse(localData); }
             renderTable();
 
-            // 載入原有的公告資料
             const localAnn = localStorage.getItem('environmental_quiz_announcement');
             if (localAnn) {
                 document.getElementById('f-announcement').value = localAnn;
                 updatePreview(localAnn);
             }
 
-            // 綁定監聽事件讓預覽即時同步
             document.getElementById('f-announcement').addEventListener('input', function() {
                 updatePreview(this.value);
             });
         };
 
-        // 更新公告預覽效果（將換行符自動轉為網頁換行標籤）
         function updatePreview(text) {
             const previewBox = document.getElementById('announcement-preview');
             if (!text || text.trim() === '') {
                 previewBox.innerHTML = '<span class="text-slate-400 italic">暫無公告內容...</span>';
                 return;
             }
-            // 允許管理者直接寫 HTML，若只寫純文字也將換行符轉換為 <br>
-            let formattedHtml = text.replace(/\n/g, '<br>');
-            previewBox.innerHTML = formattedHtml;
+            previewBox.innerHTML = text.replace(/\n/g, '<br>');
         }
 
-        // 快捷插入功能
         function insertHTML(type) {
             const textarea = document.getElementById('f-announcement');
             let insertText = '';
-            
             if (type === 'link') {
-                const url = prompt('請輸入超連結完整網址 (例如 https://...):', 'https://');
-                const text = prompt('請輸入要顯示的按鈕文字:', '點此開啟連結');
-                if (url && text) {
-                    insertText = `<a href="${url}" class="text-blue-600 font-bold underline hover:text-blue-800" target="_blank">${text}</a>`;
-                }
+                const url = prompt('請輸入超連結完整網址:', 'https://');
+                const text = prompt('請輸入要顯示的連結文字:', '點此開啟連結');
+                if (url && text) insertText = `<a href="${url}" class="text-blue-600 font-bold underline hover:text-blue-800" target="_blank">${text}</a>`;
             } else if (type === 'img') {
-                const url = prompt('請輸入網路圖片網址 (URL):', 'https://');
-                if (url) {
-                    insertText = `<img src="${url}" class="max-w-xs h-auto rounded-lg shadow-xs my-2 block" alt="公告附件圖" />`;
-                }
+                const url = prompt('請輸入網路圖片網址:', 'https://');
+                if (url) insertText = `<img src="${url}" class="max-w-xs h-auto rounded-lg shadow-xs my-2 block" alt="公告圖" />`;
             }
-
             if (insertText) {
                 const start = textarea.selectionStart;
                 const end = textarea.selectionEnd;
                 textarea.value = textarea.value.substring(0, start) + insertText + textarea.value.substring(end);
-                textarea.dispatchEvent(new Event('input')); // 觸發即時預覽更新
+                textarea.dispatchEvent(new Event('input'));
             }
         }
 
         function saveAnnouncement() {
             const content = document.getElementById('f-announcement').value;
             localStorage.setItem('environmental_quiz_announcement', content);
-            alert('公告已成功發布！前台使用者將能立刻看見最新公告。');
+            alert('已儲存本機公告暫存。');
         }
 
         function clearAnnouncement() {
@@ -239,7 +224,6 @@
                 document.getElementById('f-announcement').value = '';
                 localStorage.setItem('environmental_quiz_announcement', '');
                 updatePreview('');
-                alert('公告內容已清除。');
             }
         }
 
@@ -247,24 +231,19 @@
             document.getElementById('repo-status').innerText = `目前儲存：${dbList.length} 題`;
             const tbody = document.getElementById('table-body');
             tbody.innerHTML = '';
-
             if (dbList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-400">目前暫無任何題目，請由上方匯入或新增。</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-400">目前暫無任何題目。</td></tr>`;
                 return;
             }
-
             dbList.forEach((item, index) => {
                 if(item.級別) item.級別 = item.級別.replace(/環境教育知識競賽題-/g, '').trim();
-                
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td class="p-3 text-center text-slate-400 font-mono">${index + 1}</td>
                     <td class="p-3 font-medium text-slate-700">${item.級別 || '未分類'}</td>
                     <td class="p-3 truncate max-w-md">${item.題目 || ''}</td>
                     <td class="p-3 text-center font-bold text-emerald-600">${item.答案 || ''}</td>
-                    <td class="p-3 text-center">
-                        <button onclick="deleteItem(${index})" class="text-rose-500 hover:text-rose-700 font-medium text-xs cursor-pointer">刪除</button>
-                    </td>
+                    <td class="p-3 text-center"><button onclick="deleteItem(${index})" class="text-rose-500 hover:text-rose-700 font-medium text-xs cursor-pointer">刪除</button></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -273,79 +252,60 @@
         function addSingleQuestion(e) {
             e.preventDefault();
             const newItem = {
-                "級別": document.getElementById('f-level').value,
-                "題目": document.getElementById('f-title').value,
-                "選項1": document.getElementById('f-opt1').value,
-                "選項2": document.getElementById('f-opt2').value,
-                "選項3": document.getElementById('f-opt3').value,
-                "選項4": document.getElementById('f-opt4').value,
-                "答案": document.getElementById('f-answer').value,
-                "解析": document.getElementById('f-analysis').value
+                "級別": document.getElementById('f-level').value, "題目": document.getElementById('f-title').value,
+                "選項1": document.getElementById('f-opt1').value, "選項2": document.getElementById('f-opt2').value,
+                "選項3": document.getElementById('f-opt3').value, "選項4": document.getElementById('f-opt4').value,
+                "答案": document.getElementById('f-answer').value, "解析": document.getElementById('f-analysis').value
             };
-            dbList.push(newItem);
-            renderTable();
-            document.getElementById('f-title').value = '';
-            document.getElementById('f-opt1').value = '';
-            document.getElementById('f-opt2').value = '';
-            document.getElementById('f-opt3').value = '';
-            document.getElementById('f-opt4').value = '';
-            document.getElementById('f-analysis').value = '';
+            dbList.push(newItem); renderTable();
+            document.getElementById('f-title').value = ''; document.getElementById('f-opt1').value = '';
+            document.getElementById('f-opt2').value = ''; document.getElementById('f-opt3').value = '';
+            document.getElementById('f-opt4').value = ''; document.getElementById('f-analysis').value = '';
         }
 
-        function deleteItem(index) {
-            dbList.splice(index, 1);
-            renderTable();
-        }
+        function deleteItem(index) { dbList.splice(index, 1); renderTable(); }
+        function saveToStorage() { localStorage.setItem('environmental_quiz_db', JSON.stringify(dbList)); alert('本機題目暫存成功！'); }
+        function clearAllData() { if (confirm('確定要清空列表？')) { dbList = []; renderTable(); } }
 
-        function clearAllData() {
-            if (confirm('確定要清空後台列表中的所有題目嗎？')) {
-                dbList = [];
-                renderTable();
-            }
-        }
-
-        function saveToStorage() {
-            localStorage.setItem('environmental_quiz_db', JSON.stringify(dbList));
-            alert(`同步成功！已將 ${dbList.length} 筆資料同步發布至測驗前台系統。`);
+        // 核心新功能：打包匯出全系統的智慧 JSON 檔
+        function exportSystemData() {
+            const payload = {
+                announcement: document.getElementById('f-announcement').value,
+                db: dbList
+            };
+            const jsonString = JSON.stringify(payload);
+            const blob = new Blob([jsonString], { type: 'application/json;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute("download", "quiz_data.json");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         function importCSV(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
+            const file = event.target.files[0]; if (!file) return;
             Papa.parse(file, {
-                header: true,
-                skipEmptyLines: true,
+                header: true, skipEmptyLines: true,
                 complete: function(results) {
                     if (results.data && results.data.length > 0) {
-                        const firstRow = results.data[0];
-                        if (!firstRow.hasOwnProperty('題目') || !firstRow.hasOwnProperty('答案')) {
-                            alert('匯入失敗！請確認 CSV 檔案首行欄位名稱包含「題目」與「答案」。');
-                            return;
+                        if (!results.data[0].hasOwnProperty('題目') || !results.data[0].hasOwnProperty('答案')) {
+                            alert('格式錯誤，必須有「題目」與「答案」欄位。'); return;
                         }
-                        
-                        results.data.forEach(row => {
-                            if(row.級別) row.級別 = row.級別.replace(/環境教育知識競賽題-/g, '').trim();
-                        });
-
-                        dbList = dbList.concat(results.data);
-                        renderTable();
-                        alert(`成功追加讀入 ${results.data.length} 筆題目！點選右側「儲存並同步」即可上線。`);
+                        results.data.forEach(row => { if(row.級別) row.級別 = row.級別.replace(/環境教育知識競賽題-/g, '').trim(); });
+                        dbList = dbList.concat(results.data); renderTable();
+                        alert(`成功追加讀入 ${results.data.length} 筆題目！`);
                     }
-                },
-                error: function(err) { alert('解析失敗：' + err.message); }
+                }
             });
         }
 
         function downloadTemplate() {
-            const csvContent = "\uFEFF級別,題目,選項1,選項2,選項3,選項4,答案,解析\n初級,這裡輸入題目描述？,選項一,選項二,選項三,選項四,3,解析內容";
+            const csvContent = "\uFEFF級別,題目,選項1,選項2,選項3,選項4,答案,解析\n初級,題目敘述？,選項一,選項二,選項三,選項四,3,解析內容";
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
+            const link = document.createElement("a"); link.href = URL.createObjectURL(blob);
             link.setAttribute("download", "環境知識題庫匯入範例檔.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
         }
     </script>
 </body>
